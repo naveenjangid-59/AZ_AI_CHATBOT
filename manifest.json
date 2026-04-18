@@ -1,30 +1,31 @@
 {
   "manifest_version": 3,
-  "name": "AZ AI Helper", 
-  "version": "0.1",  
+  "name": "AZ AI Helper",
+  "version": "0.1",
   "author": "Naveen Kumar",
   "description": "A chrome extension that helps AZ users to understand the problem solution",
-  "permissions": [
-    "storage",
-    "tabs"
-  ],
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://maang.in/*"],
   "content_scripts": [
     {
-      "matches": [
-        "https://maang.in/*"
-      ],
+      "matches": ["https://maang.in/*"],
       "js": [
+        "marked.min.js",
+        "storage.js",
+        "gemini.js",
+        "utils.js",
         "content.js"
-      ]
-    } 
+      ],
+      "css": ["styles.css"]
+    }
   ],
   "background": {
     "service_worker": "background.js"
   },
-  "web_accessible_resources" : [
+  "web_accessible_resources": [
     {
       "resources": [],
-      "matches" : ["https://maang.in/*"]
+      "matches": ["https://maang.in/*"]
     }
   ],
   "action": {

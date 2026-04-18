@@ -1,0 +1,420 @@
+/* Floating Button */
+#chat-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#chat-btn:hover {
+  transform: scale(1.08) translateY(-4px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.6);
+}
+
+.chat-icon {
+  width: 28px;
+  height: 28px;
+  background: white;
+  mask: url("https://cdn-icons-png.flaticon.com/512/4712/4712027.png")
+    center/contain no-repeat;
+  -webkit-mask: url("https://cdn-icons-png.flaticon.com/512/4712/4712027.png")
+    center/contain no-repeat;
+}
+
+/* Chat Box Base */
+/* --- Replace these sections in your CSS --- */
+
+/* Chat Box Base */
+#chatbox {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 360px;
+  height: 500px;
+  /* NEW: Prevent overflowing the screen */
+  max-width: calc(100vw - 60px);
+  max-height: calc(100vh - 140px);
+
+  background: #0f172a; /* Slate 900 */
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: bottom right;
+  animation: fadeIn 0.3s ease;
+}
+
+/* EXPANDED STATE */
+#chatbox.expanded {
+  width: 650px;
+  height: 80vh;
+  /* NEW: Ensure expanded state respects screen bounds */
+  max-width: calc(100vw - 80px);
+  max-height: calc(100vh - 80px);
+
+  bottom: 40px;
+  right: 40px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* --- Add this at the VERY BOTTOM of your CSS file --- */
+
+/* MOBILE & SMALL SCREEN RESPONSIVENESS */
+@media (max-width: 768px) {
+  /* Adjust button placement */
+  #chat-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+  }
+
+  /* Default chatbox takes up most of the screen */
+  #chatbox {
+    bottom: 80px;
+    right: 20px;
+    width: calc(100vw - 40px);
+    max-width: 400px;
+  }
+
+  /* Expanded chatbox fills almost the entire mobile screen */
+  #chatbox.expanded {
+    width: calc(100vw - 30px);
+    height: calc(100vh - 60px);
+    bottom: 30px;
+    right: 15px;
+    max-width: none;
+  }
+
+  /* Shrink header padding slightly to save space */
+  .chat-header {
+    padding: 12px;
+  }
+
+  /* Adjust API Modal for small screens */
+  #api-modal {
+    right: 50%;
+    transform: translateX(50%);
+    width: calc(100vw - 40px);
+    max-width: 320px;
+  }
+}
+
+/* Header */
+.chat-header {
+  padding: 16px;
+  background: #1e293b; /* Slate 800 */
+  border-bottom: 1px solid #334155;
+  color: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 600;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981; /* Emerald 500 */
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.chat-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.chat-actions button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-actions button:hover {
+  color: #f8fafc;
+}
+
+/* Messages Area */
+#messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #0f172a;
+}
+
+/* Custom Scrollbar */
+#messages::-webkit-scrollbar {
+  width: 6px;
+}
+#messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#messages::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+#messages::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Message Bubbles */
+.message {
+  max-width: 85%;
+  padding: 10px 14px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  align-self: flex-end;
+  border-radius: 16px 16px 4px 16px;
+}
+
+.bot {
+  background: #1e293b;
+  color: #e2e8f0;
+  align-self: flex-start;
+  border: 1px solid #334155;
+  border-radius: 16px 16px 16px 4px;
+}
+
+/* Input Area */
+.chat-input-area {
+  display: flex;
+  padding: 12px;
+  background: #1e293b;
+  border-top: 1px solid #334155;
+  gap: 8px;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #334155;
+  border-radius: 24px;
+  outline: none;
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 14px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.chat-input-area input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.chat-input-area input::placeholder {
+  color: #64748b;
+}
+
+.chat-input-area button {
+  background: #6366f1;
+  border: none;
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
+
+.chat-input-area button:hover {
+  background: #4f46e5;
+}
+
+.chat-input-area button:active {
+  transform: scale(0.95);
+}
+
+/* API Modal */
+#api-modal {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: #1e293b;
+  padding: 24px;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  width: 300px;
+  color: white;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-content input:focus {
+  border-color: #6366f1;
+}
+
+.modal-content button {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.modal-content button:hover {
+  opacity: 0.9;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   MARKDOWN & CODE BLOCK STYLING
+   ========================================= */
+
+/* Proper spacing for paragraphs */
+.message.bot p {
+  margin: 0 0 10px 0;
+}
+.message.bot p:last-child {
+  margin: 0;
+}
+
+/* Inline Code snippets (e.g. `int x = 5;`) */
+.message.bot code {
+  font-family: "Fira Code", "Courier New", Courier, monospace;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #38bdf8; /* Light blue accent for inline code */
+}
+
+/* Multi-line Code Blocks */
+.message.bot pre {
+  background: #020617; /* Very dark blue/black background */
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1px solid #334155;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Override inline code styles when inside a pre block */
+.message.bot pre code {
+  background: transparent;
+  padding: 0;
+  color: #e2e8f0; /* Standard light text for main code block */
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Custom Scrollbar for Code Blocks */
+.message.bot pre::-webkit-scrollbar {
+  height: 6px;
+}
+.message.bot pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+.message.bot pre::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 10px;
+}
+.message.bot pre::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Lists formatting */
+.message.bot ul,
+.message.bot ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.message.bot li {
+  margin-bottom: 4px;
+}
+
+/* Bold text accent */
+.message.bot strong {
+  color: #f8fafc;
+  font-weight: 700;
+}
